@@ -1,0 +1,57 @@
+{% include 'header.tpl' %}
+
+	<script>
+	    $(function() {
+	        $('#keyword').maxlength({max:50});
+	    });
+	</script>
+
+
+{% if app.request.query.all is defined %}
+  <div class="alert alert-success">
+    Saved keyword to database!
+  </div>
+{% endif %}
+
+<div class="container">
+<h2>Welcome Jon</h2>
+<form class="form-horizontal" method='post' action='getdata.php'>
+<fieldset>
+
+<!-- Form Name -->
+<legend>Enter Criteria</legend>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="keyword">Keyword</label>
+  <div class="controls">
+    <input id="keyword" name="keyword" type="text" placeholder="enter keyword" class="input-xlarge" required="";>
+    <p class="help-block">limited to 25 characters for CreateSpace!</p>
+  </div>
+</div>
+
+<!-- select input-->
+<div class="control-group">
+  <label class="control-label" for="category">Category</label>
+  <div class="controls">
+    <select id="category" name="category" class='form-control'>
+	<option value="Books">Books</value>
+	<option value="KindleStore">Kindle</value>
+    </select>
+    <p class="help-block">Books is default, kindle has price problems</p>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="control-group">
+  <label class="control-label" for="submit"></label>
+  <div class="controls">
+    <button id="submit" name="submit" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+
+{% include 'footer.tpl' %}

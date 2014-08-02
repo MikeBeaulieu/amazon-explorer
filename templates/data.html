@@ -1,0 +1,70 @@
+{% include 'header.tpl' %}
+<div class="container">
+<pre>
+{# dump(test) #}
+</pre>
+<h2>{{nicheName|capitalize }}</h2>
+Total listings: <span style='color:{{resultsColor}}'> {{ totalResults }}  &nbsp; <b> - 20 - 300 is good</b></span> <p />
+
+<table class='table table-striped table-bordered table-condensed table-hover'>
+  <tr>
+    <th>Rank</th>
+    <th>Title</th>
+    <th>Price</th>
+    <th>Author</th>
+    <th>Sales 30 days</th>
+    <th>Pages</th>
+    <th># Rvw</th>
+    <th></th>
+  </tr>
+
+{% for si in test %}
+  <tr>
+    <td> {{ si.salesrank }} </td>
+    <td> <a class="" data-fancybox-type="iframe" href="{{ si.detail }}"> {{ si.title }}</a></td>
+    <td> ${{ si.amount }}</td>
+    <td> {{ si.author }}</td>
+    <td> {{ si.sales30 }}</td>
+    <td> {{ si.pages }} </td>
+    <td> <a class="various" data-fancybox-type="iframe" href="{{ si.reviews }}">Click</a> </td>
+    <td> <a class="large_image" title=" {{si.title }} ">
+	<img src="{{ si.image }}" alt=""  /></a> </td>
+  </tr>
+{% endfor %}
+</table>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".various").fancybox({
+	maxWidth	: 800,
+	maxHeight	: 600,
+	fitToView	: false,
+	width		: '70%',
+	height		: '70%',
+	autoSize	: false,
+	closeClick	: false,
+	openEffect	: 'none',
+	closeEffect	: 'none'
+    });
+});
+</script>
+
+
+<p style='color:red; font-weight:bold;'> 
+<h2>Overview</h2>
+Niche name: <span style='font-weight:bold;font-style:italic;'> {{ nicheName|capitalize }}</span> <p />
+Avg Sales Rank: <span style='color:{{ rankColor }};font-weight:bold;'> {{ avgRank }} </span><p />
+Avg Price: ${{ avgPrice|number_format(2) }} <p />
+Competition: <span style='color:{{resultsColor}}'> {{ totalResults }}  &nbsp; <b> - 20 - 500 is good</b></span>  <p />
+Apprx Sales (avg 30/days): {{ avgSales }}<p />
+
+<hr />
+  <div class='btn-group'>
+    <a href='get.php'><button class='btn btn-primary'>New Search</button></a><p />
+    <a href='saveniche.php?name={{ nicheName }}&results={{ totalResults }}&avg_rank={{ avgRank }}&avg_price={{ avgPrice }}' >
+       <button class='btn btn-btn-info'>Save Niche</button>
+    </a>
+   </div>
+</div>
+
+{% include 'footer.tpl' %}
