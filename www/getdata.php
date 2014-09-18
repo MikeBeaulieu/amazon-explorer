@@ -1,20 +1,5 @@
 <?php
 
-function xml2array($xml) {
-  $arr = array();
-  foreach ($xml as $element) {
-    $tag = $element->getName();
-    $e = get_object_vars($element);
-    if (!empty($e)) {
-      $arr[$tag] = $element instanceof SimpleXMLElement ? xml2array($element) : $e;
-    }
-    else {
-      $arr[$tag] = trim($element);
-    }
-  }
-  return $arr;
-}
-
 require ('./libs/application.php');
 
 // useful for getting all XML data if wanted
@@ -25,27 +10,33 @@ require('./libs/amazon-rank.php');
 require('./vendor/aws_signed_request.php');
 require('./vendor/amazon_api_class.php');
 
+$region = $_POST['region'];
 
-$amazon = new AmazonProductAPI($public, $private, $site, $affiliate_id);
+//$amazon = new AmazonProductAPI($public, $private, $site, $affiliate_id);
+$amazon = new AmazonProductAPI();
 // get product info for a category - top 10
 //$category = 'Books';
 $category = $_POST['category'];
 // limit to 25 chars per amazon
 $keyword_limit = 25;
-//  $keyword = 'odesk';
 $keyword = $_POST['keyword'];
+
+if ($category == 'Books') {
+    $keyword = $_POST['keyword'] . ' -kindle';
+}
 
 $single = array(
 		'Operation' => 'ItemSearch',
 		'SearchIndex' => $category,
-		//      'BrowseNode' => '158568011',
+// 'BrowseNode' => '283155',
 		'Keywords' => $keyword,
-		'ResponseGroup' => 'Large'
+		'MinimumPrice' => '0.01',
+		'ResponseGroup' => 'Large,OfferFull'
 		);
 
 try
 {
-  $result = $amazon->queryAmazon($single);
+  $result = $amazon->queryAmazon($region,$single);
 }
 catch(Exception $e)
 {
@@ -166,6 +157,7 @@ echo $template->display(array('totalResults' => $totalResults,
    'rankColor' => $rank_help,
    'avgPrice' => $avg_price,
    'test' => $test,
+   'region' => $region,
    'avgPages' => $avg_pages,
    'minPages' => $minpagecnt,
    'maxPages' => $maxpagecnt,
