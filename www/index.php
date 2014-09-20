@@ -1,15 +1,7 @@
 <?php
 
-// put full path to Smarty.class.php
-require('/var/www/libs/smarty/Smarty.class.php');
-$smarty = new Smarty();
+require ('./libs/application.php');
 
-$smarty->setTemplateDir('./templates');
-$smarty->setCompileDir('./templates_c');
-//$smarty->setCacheDir('/web/www.example.com/smarty/cache');
-//$smarty->setConfigDir('/web/www.example.com/smarty/configs');
-
-$smarty->assign('name', 'Ned');
-$smarty->display('index.tpl');
-
-?>
+$template = $twig->loadTemplate('form.html');
+$template->display(array('test'));
+print ($template);
